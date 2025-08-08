@@ -34,15 +34,23 @@ A simple web application for handwritten digit recognition using the MNIST datas
    git clone <repo-url>
    cd MNIST-Digit-Recognition-MLP-Interactive-App
    ```
-2. Install dependencies:
+2. Create a virtual environment named `env` (recommended):
+   ```powershell
+   python -m venv env
+   ```
+3. Activate the virtual environment:
+   ```powershell
+   .\env\Scripts\activate
+   ```
+4. Install dependencies:
    ```powershell
    pip install -r requirements.txt
    ```
-3. Run the app:
+5. Run the app:
    ```powershell
    python app.py
    ```
-4. Open your browser and go to `http://localhost:5000`
+6. Open your browser and go to `http://localhost:5000`
 
 ## Usage
 - Use your mouse to draw a digit on the canvas.
@@ -63,17 +71,4 @@ This project is licensed under the MIT License.
 
 # Using a virtual environment (recommended)
 
-To avoid conflicts with other Python projects, it's recommended to use a virtual environment:
-
-1. Create a virtual environment named `env`:
-   ```powershell
-   python -m venv env
-   ```
-2. Activate the virtual environment:
-   ```powershell
-   .\env\Scripts\activate
-   ```
-3. Install dependencies:
-   ```powershell
-   pip install -r requirements.txt
-   ```
+To avoid conflicts with other Python projects, it's recommended to use a virtual environment. See the Installation section above for steps.
