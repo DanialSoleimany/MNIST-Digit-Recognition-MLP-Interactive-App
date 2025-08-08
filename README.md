@@ -60,3 +60,20 @@ This project is licensed under the MIT License.
 - [MNIST Dataset](http://yann.lecun.com/exdb/mnist/)
 - [TensorFlow](https://www.tensorflow.org/)
 - [Flask](https://flask.palletsprojects.com/)
+
+# Using a virtual environment (recommended)
+
+To avoid conflicts with other Python projects, it's recommended to use a virtual environment:
+
+1. Create a virtual environment named `env`:
+   ```powershell
+   python -m venv env
+   ```
+2. Activate the virtual environment:
+   ```powershell
+   .\env\Scripts\activate
+   ```
+3. Install dependencies:
+   ```powershell
+   pip install -r requirements.txt
+   ```
