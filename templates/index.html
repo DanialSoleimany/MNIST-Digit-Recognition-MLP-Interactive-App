@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing & Crop App</title>
+    <style>
+            body {
+                margin: 0;
+                padding: 20px;
+                font-family: Arial, sans-serif;
+                background: linear-gradient(135deg, #1a0033 0%, #8000ff 100%);
+                min-height: 100vh;
+            }
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                text-align: center;
+                background: rgba(0,0,0,0.85);
+                border-radius: 20px;
+                box-shadow: 0 8px 32px 0 rgba(128,0,255,0.3);
+                padding: 30px 40px 40px 40px;
+                color: #fff;
+            }
+            h1 {
+                color: #fff;
+                margin-bottom: 20px;
+                text-shadow: 0 2px 8px #a366ff;
+            }
+            /* Make all direct children of .container (except .info) white */
+            .container > *:not(.info) {
+                color: #fff;
+            }
+            .info {
+                background: #111 !important;
+                color: #111;
+                border: 2px solid #a366ff !important;
+                border-radius: 10px;
+                margin-top: 20px;
+                margin-bottom: 30px;
+                text-align: left;
+                padding: 18px 24px;
+                box-shadow: 0 2px 12px 0 rgba(128,0,255,0.15);
+            }
+            .info strong {
+                color: #a366ff;
+                font-size: 18px;
+                display: block;
+                margin-bottom: 10px;
+            }
+            .info ul {
+                list-style: disc inside;
+                margin: 0;
+                padding-left: 18px;
+            }
+            .info li {
+                margin-bottom: 8px;
+                font-size: 16px;
+                color: #fff !important;
+            }
+            /* Prediction styling */
+            #cropPreview strong {
+                color: #8000ff !important;
+            }
+            #cropPreview p {
+                color: #8000ff !important;
+            }
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .canvas-container {
+            display: inline-block;
+            border: 3px solid #333;
+            border-radius: 10px;
+            background: black; /* Black background to match canvas */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        #drawingCanvas {
+            display: block;
+            cursor: crosshair;
+        }
+        
+        .controls {
+            margin: 20px 0;
+        }
+        
+        .control-group {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="range"] {
+            width: 100px;
+        }
+        
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        #cropPreview {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        #cropPreview img {
+            max-width: 300px;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            margin: 10px;
+        }
+
+        .canvas-container button {
+            background: #8000ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            z-index: 2;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition: background 0.2s;
+        }
+        .canvas-container button:hover {
+            background: #a366ff;
+        }
+
+        .clear-canvas-btn {
+            background: #8000ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            z-index: 2;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        .clear-canvas-btn:hover {
+            background: #a366ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MNIST Digit Recognition App</h1>
+        
+        <div class="info">
+            <strong>Instructions:</strong>
+            <ul>
+                <li>Draw white digits (0-9) on the black canvas</li>
+                <li>When you release the mouse button, the drawn region will be sent to the MNIST model</li>
+                <li>The prediction result will appear to the right of the canvas and in the terminal</li>
+                <li>No images are saved - only used for real-time prediction</li>
+                <li>Use the controls below to adjust brush size and clear the canvas</li>
+            </ul>
+        </div>
+        
+        <div style="display: flex; align-items: flex-start; gap: 40px; position: relative; justify-content: flex-start;">
+            <div class="canvas-container" style="flex: none; position: relative;">
+                <button class="clear-canvas-btn" onclick="clearCanvas()">Clear Canvas</button>
+                <canvas id="drawingCanvas" width="28" height="28" style="width:560px; height:560px; image-rendering: pixelated; transform: scale(1);"></canvas>
+            </div>
+            <div id="cropPreview" style="min-width:220px; max-width:220px; min-height:560px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;"></div>
+        </div>
+        
+        <div id="status" class="status"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        const statusDiv = document.getElementById('status');
+        const cropPreview = document.getElementById('cropPreview');
+        
+        let isDrawing = false;
+        let currentPath = [];
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        let brushSize = 3;
+        
+        // Initialize canvas with black background
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.strokeStyle = '#FFFFFF'; // White drawing color
+        ctx.fillStyle = '#000000';   // Black background
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Remove brush size slider and related JS
+        // ctx.lineWidth = brushSize; // Set a fixed brush size
+        ctx.lineWidth = 2; // Default brush size for MNIST
+        
+        // Mouse events
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        
+        // Touch events for mobile
+        canvas.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const mouseEvent = new MouseEvent('mousedown', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        });
+        
+        canvas.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        });
+        
+        canvas.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            const mouseEvent = new MouseEvent('mouseup', {});
+            canvas.dispatchEvent(mouseEvent);
+        });
+        
+        function getCanvasCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            // Scale coordinates from display size to actual canvas size
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            let x, y;
+            if (e.touches && e.touches.length > 0) {
+                x = (e.touches[0].clientX - rect.left) * scaleX;
+                y = (e.touches[0].clientY - rect.top) * scaleY;
+            } else {
+                x = (e.clientX - rect.left) * scaleX;
+                y = (e.clientY - rect.top) * scaleY;
+            }
+            return { x, y };
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            currentPath = [];
+            minX = Infinity; minY = Infinity; maxX = -Infinity; maxY = -Infinity;
+            const coords = getCanvasCoords(e);
+            updateBounds(coords.x, coords.y);
+            currentPath.push({x: coords.x, y: coords.y});
+            ctx.beginPath();
+            ctx.moveTo(coords.x, coords.y);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const coords = getCanvasCoords(e);
+            updateBounds(coords.x, coords.y);
+            currentPath.push({x: coords.x, y: coords.y});
+            ctx.lineTo(coords.x, coords.y);
+            ctx.stroke();
+        }
+        
+        function stopDrawing() {
+            if (!isDrawing) return;
+            isDrawing = false;
+            
+            if (currentPath.length > 1) {
+                cropAndSave();
+            }
+        }
+        
+        function updateBounds(x, y) {
+            const padding = brushSize + 5; // Add some padding around the drawing
+            minX = Math.min(minX, x - padding);
+            minY = Math.min(minY, y - padding);
+            maxX = Math.max(maxX, x + padding);
+            maxY = Math.max(maxY, y + padding);
+        }
+        
+        function cropAndSave() {
+            // Ensure bounds are within canvas
+            minX = Math.max(0, minX);
+            minY = Math.max(0, minY);
+            maxX = Math.min(canvas.width, maxX);
+            maxY = Math.min(canvas.height, maxY);
+
+            const width = maxX - minX;
+            const height = maxY - minY;
+
+            if (width <= 0 || height <= 0) {
+                showStatus('Invalid crop area', 'error');
+                return;
+            }
+
+            // Create a temporary canvas for the crop
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCanvas.width = width;
+            tempCanvas.height = height;
+
+            // Fill with black background
+            tempCtx.fillStyle = '#000000';
+            tempCtx.fillRect(0, 0, width, height);
+
+            // Copy the cropped region
+            tempCtx.drawImage(canvas, minX, minY, width, height, 0, 0, width, height);
+
+            // Now resize to 28x28 for preview and backend
+            const resizedCanvas = document.createElement('canvas');
+            const resizedCtx = resizedCanvas.getContext('2d');
+            resizedCanvas.width = 28;
+            resizedCanvas.height = 28;
+            resizedCtx.fillStyle = '#000000';
+            resizedCtx.fillRect(0, 0, 28, 28);
+            resizedCtx.drawImage(tempCanvas, 0, 0, width, height, 0, 0, 28, 28);
+
+            // Convert to base64
+            const imageData = resizedCanvas.toDataURL('image/png');
+
+            // Send to server for prediction
+            fetch('/predict_crop', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    image: imageData
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showPredictionResult(imageData, data.digit, data.confidence);
+                } else {
+                    showStatus('Error: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                showStatus('Network error: ' + error.message, 'error');
+            });
+        }
+        
+        function showStatus(message, type) {
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        function showPredictionResult(imageData, digit, confidence) {
+            const img = document.createElement('img');
+            img.src = imageData;
+            img.title = 'Last drawn digit';
+            
+            const caption = document.createElement('p');
+            let captionText = 'Last drawn digit';
+            if (digit !== null && digit !== undefined) {
+                captionText += ` | Predicted: ${digit} (${(confidence * 100).toFixed(2)}% confidence)`;
+            }
+            caption.textContent = captionText;
+            caption.style.marginTop = '5px';
+            caption.style.fontSize = '14px';
+            caption.style.color = '#666';
+            
+            // Add prediction styling
+            if (digit !== null && digit !== undefined) {
+                const predictionDiv = document.createElement('div');
+                predictionDiv.innerHTML = `<strong style="color: #8000ff; font-size: 18px;">Predicted Digit: ${digit}</strong>`;
+                predictionDiv.style.marginTop = '10px';
+                
+                cropPreview.innerHTML = '';
+                cropPreview.appendChild(img);
+                cropPreview.appendChild(predictionDiv);
+                cropPreview.appendChild(caption);
+            } else {
+                cropPreview.innerHTML = '';
+                cropPreview.appendChild(img);
+                cropPreview.appendChild(caption);
+            }
+        }
+        
+        function clearCanvas() {
+            ctx.fillStyle = '#000000'; // Black background
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            cropPreview.innerHTML = '';
+        }
+    </script>
+</body>
+</html>
