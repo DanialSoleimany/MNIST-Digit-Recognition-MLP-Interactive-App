@@ -11,11 +11,6 @@ from tensorflow import keras
 
 app = Flask(__name__)
 
-# Create crops folder if it doesn't exist (not needed anymore but keeping for compatibility)
-CROPS_FOLDER = 'crops'
-if not os.path.exists(CROPS_FOLDER):
-    os.makedirs(CROPS_FOLDER)
-
 # Load the MNIST model
 MODEL_PATH = 'models'
 model = None
