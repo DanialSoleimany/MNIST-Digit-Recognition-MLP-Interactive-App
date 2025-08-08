@@ -18,7 +18,6 @@ model = None
 def load_mnist_model():
     global model
     try:
-        # Look for .h5 files in the model folder
         h5_files = [f for f in os.listdir(MODEL_PATH) if f.endswith('.h5')]
         if not h5_files:
             print("Warning: No .h5 model file found in model folder")
@@ -27,10 +26,10 @@ def load_mnist_model():
         model_file = h5_files[0]  # Use the first .h5 file found
         model_path = os.path.join(MODEL_PATH, model_file)
         model = keras.models.load_model(model_path)
-        print(f"✅ MNIST model loaded successfully from: {model_path}")
+        print(f"MNIST model loaded successfully from: {model_path}")
         return model
     except Exception as e:
-        print(f"❌ Error loading MNIST model: {e}")
+        print(f"Error loading MNIST model: {e}")
         return None
 
 def preprocess_image_for_mnist(image):
@@ -59,19 +58,13 @@ def preprocess_image_for_mnist(image):
             new_image.paste(image, (paste_x, paste_y))
             image = new_image
 
-        # Resize to 28x28 (MNIST standard)
         image = image.resize((28, 28), Image.Resampling.LANCZOS)
-
-        # Convert to numpy array
         img_array = np.array(image)
-
-        # Normalize to 0-1 range
         img_array = img_array.astype('float32') / 255.0
-
-        # Reshape for model input (add batch dimension)
         img_array = img_array.reshape(1, 28, 28, 1)
 
         return img_array
+        
     except Exception as e:
         print(f"❌ Error preprocessing image: {e}")
         return None
@@ -81,7 +74,7 @@ def predict_digit(image):
     Predict the digit using the loaded MNIST model
     """
     if model is None:
-        print("❌ Model not loaded")
+        print("Model not loaded")
         return None, None
     
     try:
@@ -90,17 +83,15 @@ def predict_digit(image):
         if processed_image is None:
             return None, None
         
-        # Make prediction
         predictions = model.predict(processed_image, verbose=0)
         
-        # Get the predicted digit and confidence
         predicted_digit = np.argmax(predictions[0])
         confidence = float(np.max(predictions[0]))
         
         return predicted_digit, confidence
         
     except Exception as e:
-        print(f"❌ Error during prediction: {e}")
+        print(f"Error during prediction: {e}")
         return None, None
 
 # Load the model at startup
@@ -115,18 +106,14 @@ def predict_crop():
     try:
         data = request.get_json()
         
-        # Get the base64 image data
         image_data = data['image']
         
-        # Remove the data URL prefix
         if image_data.startswith('data:image/png;base64,'):
             image_data = image_data[22:]
         
-        # Decode the base64 image
         image_bytes = base64.b64decode(image_data)
         image = Image.open(io.BytesIO(image_bytes))
         
-        # Predict digit using MNIST model
         predicted_digit, confidence = predict_digit(image)
         
         return jsonify({
