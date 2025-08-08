@@ -27,7 +27,7 @@ A simple web application for handwritten digit recognition using the MNIST datas
 
 ## Getting Started
 ### Prerequisites
-- Python 3.7+
+- Python 3.10.10
 - pip
 
 ### Installation
