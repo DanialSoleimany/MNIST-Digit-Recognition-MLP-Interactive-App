@@ -7,7 +7,7 @@ A simple web application for handwritten digit recognition using the MNIST datas
 - Uses a trained MLP model on the MNIST dataset
 - Real-time confidence score for each prediction
 - No images are saved; predictions are made in-memory
-- Modern, responsive UI
+- Modern UI
 
 ## Project Structure
 ```
@@ -17,7 +17,7 @@ A simple web application for handwritten digit recognition using the MNIST datas
 ├── templates/
 │   └── index.html        # Web interface
 ├── images/
-│   └── digits.jpg        # Sample image (if used)
+│   └── digits.jpg        # Notebook Image
 ├── notebook styles/
 │   └── styles.py         # Custom styles for notebook
 ├── README.md             # Project documentation
