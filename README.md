@@ -17,7 +17,7 @@ A simple web application for handwritten digit recognition using the MNIST datas
 ├── templates/
 │   └── index.html        # Web interface
 ├── images/
-│   └── digits.jpg        # Notebook Image
+│   └── digits.jpg        # Notebook/README Images
 ├── notebook styles/
 │   └── styles.py         # Custom styles for notebook
 ├── README.md             # Project documentation
@@ -64,11 +64,3 @@ A simple web application for handwritten digit recognition using the MNIST datas
 ## License
 This project is licensed under the MIT License.
 
-## Acknowledgements
-- [MNIST Dataset](http://yann.lecun.com/exdb/mnist/)
-- [TensorFlow](https://www.tensorflow.org/)
-- [Flask](https://flask.palletsprojects.com/)
-
-# Using a virtual environment (recommended)
-
-To avoid conflicts with other Python projects, it's recommended to use a virtual environment. See the Installation section above for steps.
