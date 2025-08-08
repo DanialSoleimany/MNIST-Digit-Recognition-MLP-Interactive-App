@@ -2,7 +2,7 @@
 
 A simple web application for handwritten digit recognition using the MNIST dataset and a Multi-Layer Perceptron (MLP) model. The app is built with TensorFlow/Keras and Flask, providing an interactive interface for real-time digit prediction.
 
-- [MNIST Digit Recognition MLP Interactive App](https://github.com/DanialSoleimany/MNIST-Digit-Recognition-MLP-Interactive-App) – An interactive web app for recognizing MNIST digits using a multi-layer perceptron (MLP).
+![App Screenshot](https://github.com/DanialSoleimany/MNIST-Digit-Recognition-MLP-Interactive-App/raw/main/images/app.png)
 
 ## Features
 - Draw digits on a canvas and get instant predictions
