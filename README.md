@@ -4,8 +4,6 @@ A simple web application for handwritten digit recognition using the MNIST datas
 
 ![App Screenshot](https://github.com/DanialSoleimany/MNIST-Digit-Recognition-MLP-Interactive-App/raw/main/images/app.png)
 
-[![Watch the video](https://img.youtube.com/vi/VIDEO_ID/0.jpg)]([https://www.youtube.com/watch?v=VIDEO_ID](https://www.youtube.com/shorts/DEwOv-ilLXg))
-
 ## Features
 - Draw digits on a canvas and get instant predictions
 - Uses a trained MLP model on the MNIST dataset
